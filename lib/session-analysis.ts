@@ -12,6 +12,7 @@ export interface WatchSession {
   averageVideoDuration: number // in seconds
 }
 
+// Update the SessionAnalysisResult interface to include totalWatchTimeHours
 export interface SessionAnalysisResult {
   sessions: WatchSession[]
   totalSessions: number
@@ -23,12 +24,11 @@ export interface SessionAnalysisResult {
   sessionsPerDay: Record<string, number>
   sessionsPerHour: Record<string, number>
   averageVideosPerSession: number
+  totalWatchTimeHours: number // Add this new property
 }
 
 export interface SessionAnalysisOptions {
   // Maximum gap between videos to be considered part of the same session (in minutes)
-  maxGapMinutes: number
-  // Minimum number of videos to be considered a session
   minVideosPerSession: number
 }
 
@@ -98,15 +98,22 @@ export function analyzeWatchSessions(
       sessionsPerDay: {},
       sessionsPerHour: {},
       averageVideosPerSession: 0,
+      totalWatchTimeHours: 0, // Add this new property
     }
   }
 
   // Calculate session statistics
   const totalSessions = sessions.length
   const totalDuration = sessions.reduce((sum, session) => sum + session.duration, 0)
-  const averageSessionDuration = totalDuration / totalSessions
+  // In the analyzeWatchSessions function, add the calculation for totalWatchTimeHours
+  // After calculating totalDuration, add:
+  const totalWatchTimeHours = totalDuration / 60
+
   const totalVideos = sessions.reduce((sum, session) => sum + session.videos.length, 0)
   const averageVideosPerSession = totalVideos / totalSessions
+
+  // Calculate average session duration
+  const averageSessionDuration = totalDuration / totalSessions
 
   // Find longest session and session with most videos
   const longestSession = sessions.reduce((longest, current) =>
@@ -149,6 +156,7 @@ export function analyzeWatchSessions(
     { day: "", count: 0 },
   ).day
 
+  // In the return statement, add totalWatchTimeHours to the returned object
   return {
     sessions,
     totalSessions,
@@ -160,6 +168,7 @@ export function analyzeWatchSessions(
     sessionsPerDay,
     sessionsPerHour,
     averageVideosPerSession,
+    totalWatchTimeHours, // Add this new property
   }
 }
 
@@ -229,4 +238,16 @@ export function formatTimeOfDay(date: Date): string {
 // Helper function to format date
 export function formatDate(date: Date): string {
   return date.toLocaleDateString([], { year: "numeric", month: "short", day: "numeric" })
+}
+
+// Add a helper function to format hours
+export function formatWatchTimeHours(hours: number): string {
+  const wholeHours = Math.floor(hours)
+  const minutes = Math.round((hours - wholeHours) * 60)
+
+  if (wholeHours > 0) {
+    return `${wholeHours.toLocaleString()} hour${wholeHours !== 1 ? "s" : ""} ${minutes > 0 ? `${minutes} min` : ""}`
+  } else {
+    return `${minutes} min`
+  }
 }

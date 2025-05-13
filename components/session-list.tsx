@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { formatSessionDuration, formatTimeOfDay, formatDate } from "@/lib/session-analysis"
+import { formatSessionDuration, formatTimeOfDay, formatDate, formatWatchTimeHours } from "@/lib/session-analysis"
 import type { WatchSession } from "@/lib/session-analysis"
 import { ChevronDown, ChevronUp, Clock, Calendar, PlayCircle } from "lucide-react"
 
@@ -170,6 +170,24 @@ export function SessionList({ sessions, limit = 5 }: SessionListProps) {
                               {category} ({count})
                             </span>
                           ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {session.totalDurationSeconds > 0 && (
+                    <div className="mt-4">
+                      <h4 className="font-medium mb-2">Watch Time:</h4>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div className="bg-muted/30 p-2 rounded">
+                          <span className="block text-muted-foreground">Session Duration</span>
+                          <span className="font-medium">{formatSessionDuration(session.duration)}</span>
+                        </div>
+                        <div className="bg-muted/30 p-2 rounded">
+                          <span className="block text-muted-foreground">Video Content Duration</span>
+                          <span className="font-medium">
+                            {formatWatchTimeHours(session.totalDurationSeconds / 3600)}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}
