@@ -1,12 +1,16 @@
 import type { ParsedWatchHistory } from "@/lib/parse-watch-history"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, Calendar } from "lucide-react"
+import { Timer } from "lucide-react"
 
+// Update the component props to accept sessionWatchTimeHours
 interface WatchTimeStatsProps {
   watchHistory: ParsedWatchHistory
+  sessionWatchTimeHours?: number
 }
 
-export function WatchTimeStats({ watchHistory }: WatchTimeStatsProps) {
+// Update the component to display session watch time
+export function WatchTimeStats({ watchHistory, sessionWatchTimeHours }: WatchTimeStatsProps) {
   // Calculate total watch time
   let totalWatchTimeSeconds = 0
   let videosWithDuration = 0
@@ -56,13 +60,27 @@ export function WatchTimeStats({ watchHistory }: WatchTimeStatsProps) {
 
   avgWatchTimePerDay = estimatedTotalWatchTimeSeconds / daysDiff / 3600 // in hours
 
+  // Format session watch time
+  const formatSessionWatchTime = (hours: number) => {
+    if (!hours) return "Not available"
+
+    const wholeHours = Math.floor(hours)
+    const minutes = Math.round((hours - wholeHours) * 60)
+
+    if (wholeHours > 0) {
+      return `${wholeHours.toLocaleString()} hour${wholeHours !== 1 ? "s" : ""}${minutes > 0 ? ` ${minutes} min` : ""}`
+    } else {
+      return `${minutes} min`
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Watch Time Statistics</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-primary" />
@@ -71,6 +89,17 @@ export function WatchTimeStats({ watchHistory }: WatchTimeStatsProps) {
             <p className="text-2xl font-bold">{formatWatchTime(estimatedTotalWatchTimeSeconds)}</p>
             <p className="text-sm text-muted-foreground">Based on {videosWithDuration} videos with duration data</p>
           </div>
+
+          {sessionWatchTimeHours !== undefined && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Timer className="h-5 w-5 text-primary" />
+                <span className="font-medium">Session Watch Time</span>
+              </div>
+              <p className="text-2xl font-bold">{formatSessionWatchTime(sessionWatchTimeHours)}</p>
+              <p className="text-sm text-muted-foreground">Total time spent in continuous watching sessions</p>
+            </div>
+          )}
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">

@@ -16,6 +16,7 @@ import { TopChannels } from "@/components/top-channels"
 import { WatchTimeChart } from "@/components/watch-time-chart"
 import { RecentVideos } from "@/components/recent-videos"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+// Add the Timer icon import
 import { AlertCircle, ArrowLeft, Info } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { CategoryAnalysis } from "@/components/category-analysis"
@@ -23,6 +24,8 @@ import { WatchTimeStats } from "@/components/watch-time-stats"
 import { TimeOfDayAnalysis } from "@/components/time-of-day-analysis"
 import { FetchAllVideosButton } from "@/components/fetch-all-videos-button"
 import { SessionAnalysis } from "@/components/session-analysis"
+// Add the formatWatchTimeHours import
+import { analyzeWatchSessions, type SessionAnalysisResult } from "@/lib/session-analysis"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -34,6 +37,8 @@ export default function DashboardPage() {
   const [authError, setAuthError] = useState<string | null>(null)
   const [dataSource, setDataSource] = useState<"localStorage" | "sessionStorage" | "indexedDB" | "none">("none")
   const [processAll, setProcessAll] = useState(false) // Declare processAll state
+  // In the DashboardPage component, add state for session analysis
+  const [sessionAnalysis, setSessionAnalysis] = useState<SessionAnalysisResult | null>(null)
 
   useEffect(() => {
     async function loadData() {
@@ -86,6 +91,21 @@ export default function DashboardPage() {
       setIsAuthenticated(true)
     }
   }, [])
+
+  // Add useEffect to calculate session analysis when watchHistory changes
+  useEffect(() => {
+    if (watchHistory && watchHistory.items) {
+      try {
+        const result = analyzeWatchSessions(watchHistory.items, {
+          maxGapMinutes: 30,
+          minVideosPerSession: 2,
+        })
+        setSessionAnalysis(result)
+      } catch (error) {
+        console.error("Error analyzing sessions:", error)
+      }
+    }
+  }, [watchHistory])
 
   // Function to load data from IndexedDB
   const loadFromIndexedDB = (key: string): Promise<any> => {
@@ -406,12 +426,12 @@ export default function DashboardPage() {
             <TabsTrigger value="categories">Categories</TabsTrigger>
           )}
         </TabsList>
-
+        // In the TabsContent for "overview", update the WatchTimeStats component
         <TabsContent value="overview" className="space-y-4">
           <WatchHistoryStats watchHistory={watchHistory} />
 
           {isAuthenticated && watchHistory.items.some((item) => item.videoDetails) && (
-            <WatchTimeStats watchHistory={watchHistory} />
+            <WatchTimeStats watchHistory={watchHistory} sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours} />
           )}
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -450,7 +470,6 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="channels" className="space-y-4">
           <Card>
             <CardHeader>
@@ -462,11 +481,9 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="videos" className="space-y-4">
           <PaginatedVideos watchHistory={watchHistory} />
         </TabsContent>
-
         <TabsContent value="trends" className="space-y-4">
           <Card>
             <CardHeader>
@@ -480,11 +497,9 @@ export default function DashboardPage() {
 
           <TimeOfDayAnalysis watchHistory={watchHistory} />
         </TabsContent>
-
         <TabsContent value="sessions" className="space-y-4">
           <SessionAnalysis watchHistory={watchHistory} />
         </TabsContent>
-
         {isAuthenticated && watchHistory.items.some((item) => item.videoDetails?.categoryName) && (
           <TabsContent value="categories" className="space-y-4">
             <CategoryAnalysis watchHistory={watchHistory} />
