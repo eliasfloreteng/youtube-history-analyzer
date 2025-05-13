@@ -26,6 +26,31 @@ import { FetchAllVideosButton } from "@/components/fetch-all-videos-button"
 import { SessionAnalysis } from "@/components/session-analysis"
 // Add the formatWatchTimeHours import
 import { analyzeWatchSessions, type SessionAnalysisResult } from "@/lib/session-analysis"
+// Add the import for the new component
+import { TotalWatchTime } from "@/components/total-watch-time"
+
+// Add a function to calculate total watch time in hours
+const calculateTotalWatchTimeHours = (watchHistory: ParsedWatchHistory): number => {
+  let totalWatchTimeSeconds = 0
+  let videosWithDuration = 0
+
+  if (watchHistory && watchHistory.items && Array.isArray(watchHistory.items)) {
+    watchHistory.items.forEach((item) => {
+      if (item.videoDetails?.durationSeconds) {
+        totalWatchTimeSeconds += item.videoDetails.durationSeconds
+        videosWithDuration++
+      }
+    })
+  }
+
+  // If we have videos with duration, estimate total watch time for all videos
+  if (videosWithDuration > 0 && watchHistory.totalVideos) {
+    const averageDuration = totalWatchTimeSeconds / videosWithDuration
+    totalWatchTimeSeconds = averageDuration * watchHistory.totalVideos
+  }
+
+  return Math.floor(totalWatchTimeSeconds / 3600)
+}
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -318,6 +343,13 @@ export default function DashboardPage() {
     )
   }
 
+  const estimatedTotalWatchTimeSeconds = watchHistory.items.reduce((acc, item) => {
+    if (item.videoDetails?.duration) {
+      return acc + item.videoDetails.duration
+    }
+    return acc
+  }, 0)
+
   return (
     <DashboardShell>
       <DashboardHeader
@@ -431,7 +463,16 @@ export default function DashboardPage() {
           <WatchHistoryStats watchHistory={watchHistory} />
 
           {isAuthenticated && watchHistory.items.some((item) => item.videoDetails) && (
-            <WatchTimeStats watchHistory={watchHistory} sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours} />
+            <>
+              <TotalWatchTime
+                totalHours={calculateTotalWatchTimeHours(watchHistory)}
+                sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
+              />
+              <WatchTimeStats
+                watchHistory={watchHistory}
+                sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
+              />
+            </>
           )}
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

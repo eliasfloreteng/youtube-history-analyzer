@@ -37,7 +37,7 @@ export function WatchTimeStats({ watchHistory, sessionWatchTimeHours }: WatchTim
     const days = Math.floor(hours / 24)
 
     if (days > 0) {
-      return `${days} days, ${hours % 24} hours`
+      return `${days} days, ${hours % 24} hours (${hours.toLocaleString()} total hours)`
     } else {
       return `${hours} hours`
     }
