@@ -504,7 +504,7 @@ export default function DashboardPage() {
       )}
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="flex flex-wrap">
+        <TabsList className="flex flex-wrap overflow-x-auto max-w-full">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="channels">Channels</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
@@ -520,16 +520,10 @@ export default function DashboardPage() {
 
           {isAuthenticated &&
             watchHistory.items.some((item) => item.videoDetails) && (
-              <>
-                <TotalWatchTime
-                  totalHours={calculateTotalWatchTimeHours(watchHistory)}
-                  sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
-                />
-                <WatchTimeStats
-                  watchHistory={watchHistory}
-                  sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
-                />
-              </>
+              <WatchTimeStats
+                watchHistory={watchHistory}
+                sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
+              />
             )}
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
