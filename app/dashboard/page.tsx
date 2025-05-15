@@ -9,7 +9,13 @@ import { fetchVideoDetails } from "@/lib/youtube-api"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardShell } from "@/components/dashboard-shell"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { WatchHistoryStats } from "@/components/watch-history-stats"
 import { TopChannels } from "@/components/top-channels"
@@ -25,12 +31,17 @@ import { TimeOfDayAnalysis } from "@/components/time-of-day-analysis"
 import { FetchAllVideosButton } from "@/components/fetch-all-videos-button"
 import { SessionAnalysis } from "@/components/session-analysis"
 // Add the formatWatchTimeHours import
-import { analyzeWatchSessions, type SessionAnalysisResult } from "@/lib/session-analysis"
+import {
+  analyzeWatchSessions,
+  type SessionAnalysisResult,
+} from "@/lib/session-analysis"
 // Add the import for the new component
 import { TotalWatchTime } from "@/components/total-watch-time"
 
 // Add a function to calculate total watch time in hours
-const calculateTotalWatchTimeHours = (watchHistory: ParsedWatchHistory): number => {
+const calculateTotalWatchTimeHours = (
+  watchHistory: ParsedWatchHistory
+): number => {
   let totalWatchTimeSeconds = 0
   let videosWithDuration = 0
 
@@ -54,16 +65,21 @@ const calculateTotalWatchTimeHours = (watchHistory: ParsedWatchHistory): number 
 
 export default function DashboardPage() {
   const router = useRouter()
-  const [watchHistory, setWatchHistory] = useState<ParsedWatchHistory | null>(null)
+  const [watchHistory, setWatchHistory] = useState<ParsedWatchHistory | null>(
+    null
+  )
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoadingVideoDetails, setIsLoadingVideoDetails] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [authError, setAuthError] = useState<string | null>(null)
-  const [dataSource, setDataSource] = useState<"localStorage" | "sessionStorage" | "indexedDB" | "none">("none")
+  const [dataSource, setDataSource] = useState<
+    "localStorage" | "sessionStorage" | "indexedDB" | "none"
+  >("none")
   const [processAll, setProcessAll] = useState(false) // Declare processAll state
   // In the DashboardPage component, add state for session analysis
-  const [sessionAnalysis, setSessionAnalysis] = useState<SessionAnalysisResult | null>(null)
+  const [sessionAnalysis, setSessionAnalysis] =
+    useState<SessionAnalysisResult | null>(null)
 
   useEffect(() => {
     async function loadData() {
@@ -102,7 +118,9 @@ export default function DashboardPage() {
         setDataSource("none")
       } catch (err) {
         console.error("Failed to load watch history data:", err)
-        setError("Failed to load watch history data. Please try uploading your file again.")
+        setError(
+          "Failed to load watch history data. Please try uploading your file again."
+        )
       } finally {
         setIsLoading(false)
       }
@@ -177,7 +195,9 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error("Auth error:", err)
-      setAuthError("Failed to authenticate with YouTube. Please check your internet connection and try again.")
+      setAuthError(
+        "Failed to authenticate with YouTube. Please check your internet connection and try again."
+      )
     }
   }
 
@@ -190,7 +210,9 @@ export default function DashboardPage() {
     try {
       // Get the most recent 50 videos to avoid quota issues
       const recentVideos = watchHistory.items.slice(0, 50)
-      const videoIds = recentVideos.map((item) => item.videoId).filter(Boolean) as string[]
+      const videoIds = recentVideos
+        .map((item) => item.videoId)
+        .filter(Boolean) as string[]
 
       const videoDetails = await fetchVideoDetails(videoIds)
 
@@ -213,15 +235,24 @@ export default function DashboardPage() {
       // Store the updated data in the same place it was loaded from
       if (dataSource === "localStorage") {
         try {
-          localStorage.setItem("youtubeWatchHistory", JSON.stringify(updatedWatchHistory))
+          localStorage.setItem(
+            "youtubeWatchHistory",
+            JSON.stringify(updatedWatchHistory)
+          )
         } catch (storageError) {
           console.error("Failed to save to localStorage:", storageError)
-          sessionStorage.setItem("youtubeWatchHistory", JSON.stringify(updatedWatchHistory))
+          sessionStorage.setItem(
+            "youtubeWatchHistory",
+            JSON.stringify(updatedWatchHistory)
+          )
           setDataSource("sessionStorage")
         }
       } else if (dataSource === "sessionStorage") {
         try {
-          sessionStorage.setItem("youtubeWatchHistory", JSON.stringify(updatedWatchHistory))
+          sessionStorage.setItem(
+            "youtubeWatchHistory",
+            JSON.stringify(updatedWatchHistory)
+          )
         } catch (storageError) {
           console.error("Failed to save to sessionStorage:", storageError)
           storeInIndexedDB("youtubeWatchHistory", updatedWatchHistory)
@@ -232,7 +263,9 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error("API error:", err)
-      setError("Failed to fetch video details from YouTube API. Please try again later.")
+      setError(
+        "Failed to fetch video details from YouTube API. Please try again later."
+      )
     } finally {
       setIsLoadingVideoDetails(false)
     }
@@ -302,7 +335,10 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <DashboardShell>
-        <DashboardHeader heading="Dashboard" text="Loading your YouTube watch history data..." />
+        <DashboardHeader
+          heading="Dashboard"
+          text="Loading your YouTube watch history data..."
+        />
         <div className="grid gap-4">
           {Array(3)
             .fill(0)
@@ -325,12 +361,16 @@ export default function DashboardPage() {
   if (!watchHistory || error) {
     return (
       <DashboardShell>
-        <DashboardHeader heading="Data Error" text="There was a problem with your watch history data." />
+        <DashboardHeader
+          heading="Data Error"
+          text="There was a problem with your watch history data."
+        />
         <EmptyPlaceholder>
           <EmptyPlaceholder.Icon name="youtube" />
           <EmptyPlaceholder.Title>Data Error</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            {error || "There was a problem loading your watch history data. Please try uploading your file again."}
+            {error ||
+              "There was a problem loading your watch history data. Please try uploading your file again."}
           </EmptyPlaceholder.Description>
           <Link href="/">
             <Button variant="outline" className="mt-4">
@@ -343,12 +383,15 @@ export default function DashboardPage() {
     )
   }
 
-  const estimatedTotalWatchTimeSeconds = watchHistory.items.reduce((acc, item) => {
-    if (item.videoDetails?.duration) {
-      return acc + item.videoDetails.duration
-    }
-    return acc
-  }, 0)
+  const estimatedTotalWatchTimeSeconds = watchHistory.items.reduce(
+    (acc, item) => {
+      if (item.videoDetails?.duration) {
+        return acc + item.videoDetails.duration
+      }
+      return acc
+    },
+    0
+  )
 
   return (
     <DashboardShell>
@@ -359,11 +402,17 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row gap-2">
           {!isAuthenticated ? (
             <div className="flex flex-col sm:flex-row gap-2 items-end sm:items-center">
-              <Button onClick={handleAuthenticate}>Connect YouTube Account</Button>
-              <span className="text-xs text-muted-foreground whitespace-nowrap">(Optional)</span>
+              <Button onClick={handleAuthenticate}>
+                Connect YouTube Account
+              </Button>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                (Optional)
+              </span>
             </div>
           ) : !isLoadingVideoDetails ? (
-            <Button onClick={handleFetchVideoDetails}>Fetch Recent Videos</Button>
+            <Button onClick={handleFetchVideoDetails}>
+              Fetch Recent Videos
+            </Button>
           ) : (
             <Button disabled>Fetching Video Details...</Button>
           )}
@@ -395,14 +444,18 @@ export default function DashboardPage() {
           <Info className="h-4 w-4" />
           <AlertTitle>Partial Data</AlertTitle>
           <AlertDescription>
-            Your watch history file is large. For performance reasons, we've analyzed{" "}
-            {watchHistory.processedItems?.toLocaleString()}
-            out of {watchHistory.totalItems?.toLocaleString()} items. The statistics shown are based on this sample.
-            {!processAll && watchHistory.totalItems && watchHistory.totalItems > 10000 && (
-              <span className="block mt-1">
-                To analyze your complete history, go back and check "Process entire file" before uploading.
-              </span>
-            )}
+            Your watch history file is large. For performance reasons, we've
+            analyzed {watchHistory.processedItems?.toLocaleString()}
+            out of {watchHistory.totalItems?.toLocaleString()} items. The
+            statistics shown are based on this sample.
+            {!processAll &&
+              watchHistory.totalItems &&
+              watchHistory.totalItems > 10000 && (
+                <span className="block mt-1">
+                  To analyze your complete history, go back and check "Process
+                  entire file" before uploading.
+                </span>
+              )}
           </AlertDescription>
         </Alert>
       )}
@@ -412,8 +465,9 @@ export default function DashboardPage() {
           <Info className="h-4 w-4" />
           <AlertTitle>Large Dataset</AlertTitle>
           <AlertDescription>
-            Your watch history contains a large number of videos. We're using advanced storage techniques to handle this
-            amount of data efficiently.
+            Your watch history contains a large number of videos. We're using
+            advanced storage techniques to handle this amount of data
+            efficiently.
           </AlertDescription>
         </Alert>
       )}
@@ -423,8 +477,9 @@ export default function DashboardPage() {
           <Info className="h-4 w-4" />
           <AlertTitle>YouTube API Connection</AlertTitle>
           <AlertDescription>
-            Connecting to YouTube API is optional but provides additional data like video duration, categories, and
-            thumbnails. You can still analyze your watch history without connecting.
+            Connecting to YouTube API is optional but provides additional data
+            like video duration, categories, and thumbnails. You can still
+            analyze your watch history without connecting.
           </AlertDescription>
         </Alert>
       )}
@@ -434,7 +489,8 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Fetch All Video Details</CardTitle>
             <CardDescription>
-              Fetch details for all videos in your watch history and cache the results for better analysis
+              Fetch details for all videos in your watch history and cache the
+              results for better analysis
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -454,32 +510,35 @@ export default function DashboardPage() {
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="sessions">Sessions</TabsTrigger>
           <TabsTrigger value="trends">Trends</TabsTrigger>
-          {isAuthenticated && watchHistory.items.some((item) => item.videoDetails?.categoryName) && (
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-          )}
+          {isAuthenticated &&
+            watchHistory.items.some(
+              (item) => item.videoDetails?.categoryName
+            ) && <TabsTrigger value="categories">Categories</TabsTrigger>}
         </TabsList>
-        // In the TabsContent for "overview", update the WatchTimeStats component
         <TabsContent value="overview" className="space-y-4">
           <WatchHistoryStats watchHistory={watchHistory} />
 
-          {isAuthenticated && watchHistory.items.some((item) => item.videoDetails) && (
-            <>
-              <TotalWatchTime
-                totalHours={calculateTotalWatchTimeHours(watchHistory)}
-                sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
-              />
-              <WatchTimeStats
-                watchHistory={watchHistory}
-                sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
-              />
-            </>
-          )}
+          {isAuthenticated &&
+            watchHistory.items.some((item) => item.videoDetails) && (
+              <>
+                <TotalWatchTime
+                  totalHours={calculateTotalWatchTimeHours(watchHistory)}
+                  sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
+                />
+                <WatchTimeStats
+                  watchHistory={watchHistory}
+                  sessionWatchTimeHours={sessionAnalysis?.totalWatchTimeHours}
+                />
+              </>
+            )}
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card className="col-span-2">
               <CardHeader>
                 <CardTitle>Watch Activity Over Time</CardTitle>
-                <CardDescription>Number of videos watched per month</CardDescription>
+                <CardDescription>
+                  Number of videos watched per month
+                </CardDescription>
               </CardHeader>
               <CardContent className="h-[300px]">
                 <WatchTimeChart watchHistory={watchHistory} />
@@ -489,7 +548,9 @@ export default function DashboardPage() {
             <Card className="col-span-1">
               <CardHeader>
                 <CardTitle>Top Channels</CardTitle>
-                <CardDescription>Your most watched YouTube channels</CardDescription>
+                <CardDescription>
+                  Your most watched YouTube channels
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <TopChannels watchHistory={watchHistory} />
@@ -497,14 +558,17 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {isAuthenticated && watchHistory.items.some((item) => item.videoDetails?.categoryName) && (
-            <CategoryAnalysis watchHistory={watchHistory} />
-          )}
+          {isAuthenticated &&
+            watchHistory.items.some(
+              (item) => item.videoDetails?.categoryName
+            ) && <CategoryAnalysis watchHistory={watchHistory} />}
 
           <Card>
             <CardHeader>
               <CardTitle>Recent Videos</CardTitle>
-              <CardDescription>Your most recently watched videos</CardDescription>
+              <CardDescription>
+                Your most recently watched videos
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <RecentVideos watchHistory={watchHistory} />
@@ -515,7 +579,9 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Channel Analysis</CardTitle>
-              <CardDescription>Detailed breakdown of your watched channels</CardDescription>
+              <CardDescription>
+                Detailed breakdown of your watched channels
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <TopChannels watchHistory={watchHistory} limit={20} />
@@ -529,7 +595,9 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Watching Trends</CardTitle>
-              <CardDescription>Patterns in your YouTube watching habits</CardDescription>
+              <CardDescription>
+                Patterns in your YouTube watching habits
+              </CardDescription>
             </CardHeader>
             <CardContent className="h-[400px]">
               <WatchTimeChart watchHistory={watchHistory} showDaily />
@@ -541,18 +609,25 @@ export default function DashboardPage() {
         <TabsContent value="sessions" className="space-y-4">
           <SessionAnalysis watchHistory={watchHistory} />
         </TabsContent>
-        {isAuthenticated && watchHistory.items.some((item) => item.videoDetails?.categoryName) && (
-          <TabsContent value="categories" className="space-y-4">
-            <CategoryAnalysis watchHistory={watchHistory} />
-          </TabsContent>
-        )}
+        {isAuthenticated &&
+          watchHistory.items.some(
+            (item) => item.videoDetails?.categoryName
+          ) && (
+            <TabsContent value="categories" className="space-y-4">
+              <CategoryAnalysis watchHistory={watchHistory} />
+            </TabsContent>
+          )}
       </Tabs>
     </DashboardShell>
   )
 }
 
 // Paginated videos component for handling large lists
-function PaginatedVideos({ watchHistory }: { watchHistory: ParsedWatchHistory }) {
+function PaginatedVideos({
+  watchHistory,
+}: {
+  watchHistory: ParsedWatchHistory
+}) {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
   const itemsPerPage = 20
@@ -562,7 +637,10 @@ function PaginatedVideos({ watchHistory }: { watchHistory: ParsedWatchHistory })
     ? watchHistory.items.filter(
         (video) =>
           video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (video.subtitles && video.subtitles[0]?.name.toLowerCase().includes(searchTerm.toLowerCase())),
+          (video.subtitles &&
+            video.subtitles[0]?.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()))
       )
     : watchHistory.items
 
@@ -601,11 +679,16 @@ function PaginatedVideos({ watchHistory }: { watchHistory: ParsedWatchHistory })
         <div className="space-y-4">
           {currentVideos.length > 0 ? (
             <>
-              <RecentVideos watchHistory={{ ...watchHistory, items: currentVideos }} limit={itemsPerPage} />
+              <RecentVideos
+                watchHistory={{ ...watchHistory, items: currentVideos }}
+                limit={itemsPerPage}
+              />
 
               <div className="flex items-center justify-between mt-4">
                 <div className="text-sm text-muted-foreground">
-                  Showing {startIndex + 1}-{Math.min(endIndex, filteredVideos.length)} of {filteredVideos.length} videos
+                  Showing {startIndex + 1}-
+                  {Math.min(endIndex, filteredVideos.length)} of{" "}
+                  {filteredVideos.length} videos
                 </div>
                 <div className="flex gap-1">
                   <Button
@@ -619,7 +702,9 @@ function PaginatedVideos({ watchHistory }: { watchHistory: ParsedWatchHistory })
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
                     disabled={currentPage === totalPages}
                   >
                     Next
@@ -628,7 +713,11 @@ function PaginatedVideos({ watchHistory }: { watchHistory: ParsedWatchHistory })
               </div>
             </>
           ) : (
-            <div className="text-center py-8">{searchTerm ? "No videos match your search" : "No videos available"}</div>
+            <div className="text-center py-8">
+              {searchTerm
+                ? "No videos match your search"
+                : "No videos available"}
+            </div>
           )}
         </div>
       </CardContent>
