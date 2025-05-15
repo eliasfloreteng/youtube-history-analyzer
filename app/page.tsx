@@ -24,8 +24,8 @@ export default function Home() {
                     Discover Your YouTube Watching Habits
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Upload your YouTube watch history from Google Takeout and get detailed insights about your viewing
-                    habits.
+                    Upload your YouTube watch history from Google Takeout and
+                    get detailed insights about your viewing habits.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -58,11 +58,8 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-center">
                 <div className="relative w-full max-w-[500px] overflow-hidden rounded-lg border bg-background p-2 shadow-xl">
-                  <div className="absolute right-2 top-2 z-10 rounded-full bg-background/80 p-1 backdrop-blur">
-                    <Youtube className="h-5 w-5 text-red-600" />
-                  </div>
                   <img
-                    src="/placeholder.svg?height=500&width=500"
+                    src="/screenshot.png?height=500&width=500"
                     alt="Dashboard preview"
                     className="aspect-square w-full rounded-md object-cover"
                   />
@@ -72,13 +69,19 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="upload-section" className="w-full border-t py-12 md:py-24 lg:py-32 bg-muted/40">
+        <section
+          id="upload-section"
+          className="w-full border-t py-12 md:py-24 lg:py-32 bg-muted/40"
+        >
           <div className="container px-4 md:px-6">
             <div className="mx-auto flex max-w-[800px] flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Upload Your Watch History</h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+                  Upload Your Watch History
+                </h2>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Get started by uploading your watch-history.json file from Google Takeout
+                  Get started by uploading your watch-history.json file from
+                  Google Takeout
                 </p>
               </div>
               <div className="w-full max-w-md">
@@ -116,11 +119,15 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
               <div className="space-y-4">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">How it works</div>
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Analyze Your YouTube Data</h2>
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
+                  How it works
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+                  Analyze Your YouTube Data
+                </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Our app processes your watch history and connects to YouTube&apos;s API to provide comprehensive
-                  insights.
+                  Our app processes your watch history and connects to
+                  YouTube&apos;s API to provide comprehensive insights.
                 </p>
               </div>
               <div className="grid gap-6">
@@ -131,7 +138,8 @@ export default function Home() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Upload your watch history</h3>
                     <p className="text-sm text-muted-foreground">
-                      Upload the watch-history.json file from your Google Takeout data.
+                      Upload the watch-history.json file from your Google
+                      Takeout data.
                     </p>
                   </div>
                 </div>
@@ -142,7 +150,8 @@ export default function Home() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Connect with YouTube</h3>
                     <p className="text-sm text-muted-foreground">
-                      Authorize access to YouTube Data API to fetch additional video metadata.
+                      Authorize access to YouTube Data API to fetch additional
+                      video metadata.
                     </p>
                   </div>
                 </div>
@@ -153,7 +162,8 @@ export default function Home() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">View your insights</h3>
                     <p className="text-sm text-muted-foreground">
-                      Explore detailed analytics about your viewing habits and preferences.
+                      Explore detailed analytics about your viewing habits and
+                      preferences.
                     </p>
                   </div>
                 </div>
