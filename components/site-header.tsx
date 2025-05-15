@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Youtube } from "lucide-react"
 
@@ -7,10 +10,23 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ activePath = "" }: SiteHeaderProps) {
+  const [hasHistory, setHasHistory] = useState(false)
+
+  useEffect(() => {
+    // Check for uploaded history in localStorage or sessionStorage
+    if (
+      typeof window !== "undefined" &&
+      (localStorage.getItem("youtubeWatchHistory") ||
+        sessionStorage.getItem("youtubeWatchHistory"))
+    ) {
+      setHasHistory(true)
+    }
+  }, [])
+
   // Navigation items in consistent order
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/dashboard", label: "Dashboard" },
+    ...(hasHistory ? [{ href: "/dashboard", label: "Dashboard" }] : []),
     { href: "/about", label: "About" },
   ]
 
@@ -27,7 +43,9 @@ export function SiteHeader({ activePath = "" }: SiteHeaderProps) {
               <Button
                 variant={activePath === item.href ? "default" : "ghost"}
                 size="sm"
-                className={activePath === item.href ? "pointer-events-none" : ""}
+                className={
+                  activePath === item.href ? "pointer-events-none" : ""
+                }
               >
                 {item.label}
               </Button>
