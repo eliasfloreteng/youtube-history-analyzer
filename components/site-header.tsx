@@ -10,23 +10,10 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ activePath = "" }: SiteHeaderProps) {
-  const [hasHistory, setHasHistory] = useState(false)
-
-  useEffect(() => {
-    // Check for uploaded history in localStorage or sessionStorage
-    if (
-      typeof window !== "undefined" &&
-      (localStorage.getItem("youtubeWatchHistory") ||
-        sessionStorage.getItem("youtubeWatchHistory"))
-    ) {
-      setHasHistory(true)
-    }
-  }, [])
-
   // Navigation items in consistent order
   const navItems = [
     { href: "/", label: "Home" },
-    ...(hasHistory ? [{ href: "/dashboard", label: "Dashboard" }] : []),
+    { href: "/dashboard", label: "Dashboard" },
     { href: "/about", label: "About" },
   ]
 
