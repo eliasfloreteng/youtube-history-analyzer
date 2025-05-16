@@ -86,7 +86,7 @@ export default function AboutPage() {
               </div>
               <div className="grid gap-6">
                 <div className="flex gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                     1
                   </div>
                   <div className="space-y-1">
@@ -106,7 +106,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                     2
                   </div>
                   <div className="space-y-1">
@@ -120,7 +120,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                     3
                   </div>
                   <div className="space-y-1">
@@ -133,7 +133,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                     4
                   </div>
                   <div className="space-y-1">
