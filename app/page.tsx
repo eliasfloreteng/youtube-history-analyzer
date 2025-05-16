@@ -80,8 +80,10 @@ export default function Home() {
                   Upload Your Watch History
                 </h2>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Get started by uploading your watch-history.json file from
-                  Google Takeout
+                  Get started by uploading your watch history file from Google
+                  Takeout. Make sure to select <strong>JSON</strong> as the
+                  format for your history data during the Takeout process. The
+                  file is usually named `watch-history.json`.
                 </p>
               </div>
               <div className="w-full max-w-md">
@@ -101,7 +103,11 @@ export default function Home() {
               </div>
 
               <div className="mt-4 text-sm text-muted-foreground">
-                <p>Don&apos;t have your data yet?</p>
+                <p>
+                  Don't have your data yet? When downloading from Google
+                  Takeout, ensure you select <strong>JSON</strong> as the format
+                  for your YouTube watch history.
+                </p>
                 <Link
                   href="https://takeout.google.com/"
                   target="_blank"
@@ -138,8 +144,9 @@ export default function Home() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Upload your watch history</h3>
                     <p className="text-sm text-muted-foreground">
-                      Upload the watch-history.json file from your Google
-                      Takeout data.
+                      Upload the `watch-history.json` file from your Google
+                      Takeout data. Remember to select <strong>JSON</strong> as
+                      the format when exporting.
                     </p>
                   </div>
                 </div>
