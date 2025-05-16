@@ -2,7 +2,13 @@ import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { ArrowRight, FileJson, Lock, Youtube } from "lucide-react"
 
 export default function AboutPage() {
@@ -17,18 +23,23 @@ export default function AboutPage() {
                 About YouTube History Analyzer
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Discover insights about your YouTube watching habits with our privacy-focused analysis tool.
+                Discover insights about your YouTube watching habits with our
+                privacy-focused analysis tool.
               </p>
             </div>
             <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-3">
               <Card>
                 <CardHeader className="pb-2">
                   <FileJson className="h-12 w-12 text-primary" />
-                  <CardTitle className="mt-2">Your Data, Your Insights</CardTitle>
+                  <CardTitle className="mt-2">
+                    Your Data, Your Insights
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Upload your watch history from Google Takeout and get detailed analytics about your viewing habits.
+                    Upload your watch history (in JSON format) from Google
+                    Takeout and get detailed analytics about your viewing
+                    habits.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -39,19 +50,22 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    All processing happens in your browser. Your data never leaves your device or gets stored on our
-                    servers.
+                    All processing happens in your browser. Your data never
+                    leaves your device or gets stored on our servers.
                   </CardDescription>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <Youtube className="h-12 w-12 text-red-600" />
-                  <CardTitle className="mt-2">YouTube API Integration</CardTitle>
+                  <CardTitle className="mt-2">
+                    YouTube API Integration
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Connect with YouTube Data API to fetch additional metadata about your watched videos.
+                    Connect with YouTube Data API to fetch additional metadata
+                    about your watched videos.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -62,9 +76,12 @@ export default function AboutPage() {
           <div className="container px-4 md:px-6">
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">How to Get Your YouTube Data</h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+                  How to Get Your YouTube Data
+                </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Follow these steps to download your YouTube watch history from Google Takeout.
+                  Follow these steps to download your YouTube watch history from
+                  Google Takeout.
                 </p>
               </div>
               <div className="grid gap-6">
@@ -95,8 +112,10 @@ export default function AboutPage() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Select YouTube Data</h3>
                     <p className="text-sm text-muted-foreground">
-                      Deselect all services, then select only YouTube. Click on "All YouTube data included" and deselect
-                      everything except "history".
+                      Deselect all services, then select only YouTube. Click on
+                      "All YouTube data included" and deselect everything except
+                      "history". Ensure the format for "history" is set to{" "}
+                      <strong>JSON</strong>.
                     </p>
                   </div>
                 </div>
@@ -107,7 +126,9 @@ export default function AboutPage() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Create Export</h3>
                     <p className="text-sm text-muted-foreground">
-                      Choose your export frequency, file type (ZIP), and size. Then click "Create export".
+                      Choose your export frequency, file type (ZIP), and size.
+                      Confirm that the history data will be in{" "}
+                      <strong>JSON</strong> format. Then click "Create export".
                     </p>
                   </div>
                 </div>
@@ -118,8 +139,10 @@ export default function AboutPage() {
                   <div className="space-y-1">
                     <h3 className="font-semibold">Download and Extract</h3>
                     <p className="text-sm text-muted-foreground">
-                      Once the export is ready, download and extract the ZIP file. Find the watch-history.json file in
-                      the YouTube folder.
+                      Once the export is ready, download and extract the ZIP
+                      file. Find the `watch-history.json` file in the YouTube
+                      folder (usually at `Takeout/YouTube and YouTube
+                      Music/history/watch-history.json`).
                     </p>
                   </div>
                 </div>
@@ -138,7 +161,9 @@ export default function AboutPage() {
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="mx-auto max-w-3xl space-y-4 text-center">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Frequently Asked Questions</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+                Frequently Asked Questions
+              </h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 Common questions about the YouTube History Analyzer
               </p>
@@ -150,19 +175,24 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p>
-                    Yes, all processing happens in your browser. Your watch history data never leaves your device or
-                    gets stored on our servers.
+                    Yes, all processing happens in your browser. Your watch
+                    history data never leaves your device or gets stored on our
+                    servers.
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Why do I need to connect to YouTube API?</CardTitle>
+                  <CardTitle>
+                    Why do I need to connect to YouTube API?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p>
-                    The watch history from Google Takeout only contains basic information. Connecting to YouTube API
-                    allows us to fetch additional metadata like video duration, view counts, and thumbnails.
+                    The watch history from Google Takeout only contains basic
+                    information. Connecting to YouTube API allows us to fetch
+                    additional metadata like video duration, view counts, and
+                    thumbnails.
                   </p>
                 </CardContent>
               </Card>
@@ -172,8 +202,8 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p>
-                    We only request read-only access to YouTube data. We cannot modify your account or post on your
-                    behalf.
+                    We only request read-only access to YouTube data. We cannot
+                    modify your account or post on your behalf.
                   </p>
                 </CardContent>
               </Card>
@@ -183,8 +213,9 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p>
-                    The watch history from Google Takeout includes all videos you've watched while logged in, as long as
-                    you had YouTube watch history enabled in your Google account settings.
+                    The watch history from Google Takeout includes all videos
+                    you've watched while logged in, as long as you had YouTube
+                    watch history enabled in your Google account settings.
                   </p>
                 </CardContent>
               </Card>
